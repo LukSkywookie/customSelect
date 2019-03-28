@@ -1,0 +1,17 @@
+<div class="custom-select" [ngClass]=" [selectHeight ? 'select-taller' : '', separator ? 'separated' : '' ]">
+  <div class="custom-select_current">
+    <button class="main-button" #focusHandler (click)="expandDropdown($event)" aria-haspopup="true" type="button">
+      <p>{{ currentSelected }}</p>
+      <span class="icon icon-arrow"></span>
+    </button>
+    <ul role="listbox" class="selectbox" class="custom-select_options" aria-expanded="selectExpanded" [ngClass]="{selectExpanded   : selectExpanded === true}">
+      <li role="option" *ngFor="let category of options">
+        <button type="button" (click)="getOptionLabel(category)">
+          <p class="custom-select_text">
+            <span>{{ category.label }}</span>
+          </p>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
