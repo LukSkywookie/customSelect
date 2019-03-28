@@ -1,3 +1,4 @@
+<h1>String sended to parent component: {{ objectTypeHandler }}</h1>
 <div class="wrapper">
-  <app-select [options]="options" [(currentSelected)]="objectType" [separator]="false"></app-select>
+  <app-select [dataArray]="mockData" [separator]="false" (objectType)="getObjectType($event)"></app-select>
 </div>

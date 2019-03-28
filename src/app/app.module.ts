@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SelectService } from './select.service';
@@ -13,7 +14,8 @@ import { SelectModule } from './select/select.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    SelectModule
+    SelectModule,
+    FormsModule
   ],
   providers: [
     SelectService

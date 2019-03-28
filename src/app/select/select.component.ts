@@ -1,15 +1,24 @@
-import { Component, OnInit, Input, HostListener, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
-import { SelectInterface } from './select';
+import { Component, OnInit, Input, HostListener, ElementRef, forwardRef, Output, EventEmitter } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
-  templateUrl: './select.component.html'
+  templateUrl: './select.component.html',
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true }
+  ]
 })
-export class SelectComponent implements OnInit {
+
+export class SelectComponent implements OnInit  {
 
   selectExpanded: boolean = false;
-
-  selectHeight: boolean = false;
+  value: any;
+  propagateChange = null;
+  currentSelected: string = 'Wybierz kategorie';
+  
+  @Input() dataArray: any[];
+  @Input() separator: boolean = false;
+  @Output() objectType = new EventEmitter();
 
   @HostListener('document:click', ['$event', '$event.target']) clickedOutside(event: MouseEvent, targetElement: HTMLElement) {
     if (!targetElement) {
@@ -21,34 +30,18 @@ export class SelectComponent implements OnInit {
       this.selectExpanded = false;
     }
   }
-
-  @Input() options;
-
-  @Input() objectType;
-
-  @Input() currentSelected: string;
-  @Output() currentSelectedChange = new EventEmitter();
   
-  @Input() separator: boolean = true;
-
-  @ViewChild("focusHandler") focusHandler: ElementRef;
-
 
   /* *** Konstruktor *** */
   constructor(public el: ElementRef) { }
   /* *** /Konstruktor *** */
+
 
   expandDropdown(event) {
     event.stopPropagation();
     event.preventDefault();
     this.selectExpanded = !this.selectExpanded;
     this.listAnimation();
-  }
-
-  getOptionLabel(category: SelectInterface) {
-    this.currentSelectedChange.emit(category.objectType);
-    this.selectExpanded = false;
-    this.focusHandler.nativeElement.focus();
   }
 
   listAnimation() {
@@ -67,7 +60,13 @@ export class SelectComponent implements OnInit {
     }
   }
 
+  selectCategory(category): void {
+    this.value = category;
+    this.currentSelected = this.value.label;
+    this.selectExpanded = !this.selectExpanded;
+    this.objectType.emit(this.value.objectType);
+  }
+
   ngOnInit() {
-    this.currentSelected = 'Wybierz kategorię';
   }
 }

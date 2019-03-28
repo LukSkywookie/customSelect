@@ -6,9 +6,9 @@ import { SelectService } from './select.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  options;
 
-  mockData = [
+  objectTypeHandler: any;
+  public mockData = [
     {
       "label": "Opcja 1",
       "objectType": "Opcja 1"
@@ -41,7 +41,10 @@ export class AppComponent {
 
   constructor(public selectService: SelectService) { }
 
+  getObjectType($event) {
+    this.objectTypeHandler = $event;
+  }
+
   ngOnInit() {
-    this.options = this.mockData;
   }
 }
